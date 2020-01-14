@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import com.example.jetpack1.databinding.ActivityMainBinding
+import com.example.jetpack1.ui.home.HomeViewModel
 
 class MainActivity : AppCompatActivity() {
 
