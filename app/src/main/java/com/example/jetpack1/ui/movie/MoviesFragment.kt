@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jetpack1.R
 import com.example.jetpack1.databinding.FragmentMoviesBinding
 import com.example.jetpack1.model.FilmModel
+import com.example.jetpack1.ui.detailfilm.DetailFilmFragmentArgs
+import com.example.jetpack1.ui.home.HomeFragmentDirections
 
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(), MoviesAdapter.OnMoviesClick {
 
     private lateinit var binding: FragmentMoviesBinding
 
@@ -48,12 +51,16 @@ class MoviesFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = MoviesAdapter(listOf(), activity!!)
+        adapter = MoviesAdapter(listOf(), activity!!, this)
         val dividerItemDecoration =
-            DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(dividerItemDecoration)
+            DividerItemDecoration(binding.recyclerViewMovies.context, LinearLayoutManager.VERTICAL)
+        binding.recyclerViewMovies.adapter = adapter
+        binding.recyclerViewMovies.addItemDecoration(dividerItemDecoration)
     }
 
-
+    override fun onMoviesSelected(id: Int) {
+        val action = HomeFragmentDirections.actionDetailFilmLaunch()
+        action.setIdFilm(id)
+        findNavController().navigate(action)
+    }
 }

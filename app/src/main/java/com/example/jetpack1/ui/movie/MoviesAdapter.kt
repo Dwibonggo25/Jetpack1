@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpack1.databinding.RvItemFilmBinding
 import com.example.jetpack1.model.FilmModel
 
-class MoviesAdapter (private var film : List<FilmModel>, private val context: Context) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+class MoviesAdapter (private var film : List<FilmModel>, private val context: Context, private val listener: OnMoviesClick) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -17,14 +17,21 @@ class MoviesAdapter (private var film : List<FilmModel>, private val context: Co
 
     override fun getItemCount(): Int = film.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(film[position], position, context)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(film[position], position, context, listener)
 
     class ViewHolder (private val binding : RvItemFilmBinding): RecyclerView.ViewHolder (binding.root) {
 
-        fun bind (film : FilmModel, position: Int, context: Context) {
-            binding.imageView.setImageDrawable(context.getDrawable(film.image))
-            binding.data = film
-            binding.executePendingBindings()
+        fun bind (film : FilmModel, position: Int, context: Context, listener: OnMoviesClick) {
+
+            binding.apply {
+                rvMoviesItem.setOnClickListener {
+                    listener.onMoviesSelected(film.id)
+                }
+                imageView.setImageDrawable(context.getDrawable(film.image))
+                data = film
+                executePendingBindings()
+            }
+
         }
     }
 
@@ -34,4 +41,7 @@ class MoviesAdapter (private var film : List<FilmModel>, private val context: Co
     }
 
 
+    interface OnMoviesClick {
+        fun onMoviesSelected (id: Int)
+    }
 }

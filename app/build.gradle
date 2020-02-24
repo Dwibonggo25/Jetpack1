@@ -26,6 +26,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
+
     }
 
     dataBinding {
@@ -46,6 +51,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //Test implementatation
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
 
     //navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0-rc02'
@@ -68,4 +76,7 @@ dependencies {
     //Material button
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha09'
+
+    //Mockito
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
 }

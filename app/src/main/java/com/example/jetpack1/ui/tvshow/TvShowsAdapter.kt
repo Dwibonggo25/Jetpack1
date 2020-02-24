@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpack1.databinding.RvItemFilmBinding
 import com.example.jetpack1.model.FilmModel
 
-class TvShowsAdapter (private val context: Context) : ListAdapter <FilmModel, TvShowsAdapter.ViewHolder> (DiffCallback) {
+class TvShowsAdapter (private val context: Context, private val listener: OnTvShowsClick) : ListAdapter <FilmModel, TvShowsAdapter.ViewHolder> (DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = LayoutInflater.from(parent.context)
@@ -18,14 +18,17 @@ class TvShowsAdapter (private val context: Context) : ListAdapter <FilmModel, Tv
 
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), listener)
 
     class ViewHolder(private val binding: RvItemFilmBinding, private val context: Context) : RecyclerView.ViewHolder(binding.root) {
-        fun bind (list: FilmModel) {
+        fun bind (list: FilmModel, listener: OnTvShowsClick) {
             binding.apply {
+                rvMoviesItem.setOnClickListener {
+                    listener.onTvShowsSelected(list.id)
+                }
                 data = list
-                binding.imageView.setImageDrawable(context.getDrawable(list.image))
-                binding.executePendingBindings()
+                imageView.setImageDrawable(context.getDrawable(list.image))
+                executePendingBindings()
             }
         }
     }
@@ -41,5 +44,9 @@ class TvShowsAdapter (private val context: Context) : ListAdapter <FilmModel, Tv
             }
 
         }
+    }
+
+    interface OnTvShowsClick {
+        fun onTvShowsSelected (id: Int)
     }
 }

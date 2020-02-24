@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jetpack1.R
 import com.example.jetpack1.databinding.FragmentTvShowsBinding
 import com.example.jetpack1.model.FilmModel
+import com.example.jetpack1.ui.home.HomeFragmentDirections
 
-class TvShowsFragment : Fragment() {
+class TvShowsFragment : Fragment(), TvShowsAdapter.OnTvShowsClick {
+
 
     private lateinit var viewmodel: TvShowsViewModel
 
@@ -44,9 +47,15 @@ class TvShowsFragment : Fragment() {
     }
 
     private fun initRecycerview() {
-        adapter = TvShowsAdapter(activity!!)
-        val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(dividerItemDecoration)
+        adapter = TvShowsAdapter(activity!!, this)
+        val dividerItemDecoration = DividerItemDecoration(binding.recyclerViewTvShows.context, LinearLayoutManager.VERTICAL)
+        binding.recyclerViewTvShows.adapter = adapter
+        binding.recyclerViewTvShows.addItemDecoration(dividerItemDecoration)
+    }
+
+    override fun onTvShowsSelected(id: Int) {
+        val action = HomeFragmentDirections.actionDetailFilmLaunch()
+        action.setIdFilm(id)
+        findNavController().navigate(action)
     }
 }
